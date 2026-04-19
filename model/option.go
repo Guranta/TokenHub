@@ -113,6 +113,11 @@ func InitOptionMap() {
 	common.OptionMap["WaffoPancakeWebhookPublicKey"] = setting.WaffoPancakeWebhookPublicKey
 	common.OptionMap["WaffoPancakeWebhookTestKey"] = setting.WaffoPancakeWebhookTestKey
 	common.OptionMap["WaffoPancakeStoreID"] = setting.WaffoPancakeStoreID
+	common.OptionMap["InfiniKeyID"] = setting.InfiniKeyID
+	common.OptionMap["InfiniSecretKey"] = setting.InfiniSecretKey
+	common.OptionMap["InfiniBaseURL"] = setting.InfiniBaseURL
+	common.OptionMap["InfiniWebhookSecret"] = setting.InfiniWebhookSecret
+	common.OptionMap["InfiniMinTopUp"] = strconv.Itoa(setting.InfiniMinTopUp)
 	common.OptionMap["WaffoPancakeProductID"] = setting.WaffoPancakeProductID
 	common.OptionMap["WaffoPancakeReturnURL"] = setting.WaffoPancakeReturnURL
 	common.OptionMap["WaffoPancakeCurrency"] = setting.WaffoPancakeCurrency
@@ -433,6 +438,16 @@ func updateOptionMap(key string, value string) (err error) {
 		setting.WaffoPancakeWebhookTestKey = value
 	case "WaffoPancakeStoreID":
 		setting.WaffoPancakeStoreID = value
+	case "InfiniKeyID":
+		setting.InfiniKeyID = value
+	case "InfiniSecretKey":
+		setting.InfiniSecretKey = value
+	case "InfiniBaseURL":
+		setting.InfiniBaseURL = value
+	case "InfiniWebhookSecret":
+		setting.InfiniWebhookSecret = value
+	case "InfiniMinTopUp":
+		setting.InfiniMinTopUp, _ = strconv.Atoi(value)
 	case "WaffoPancakeProductID":
 		setting.WaffoPancakeProductID = value
 	case "WaffoPancakeReturnURL":
