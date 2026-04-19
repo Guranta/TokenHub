@@ -1,0 +1,283 @@
+/* ==================== TokenHub Theme Override ==================== */
+
+:root {
+  --semi-color-bg-0: #ffffff;
+  --semi-color-bg-1: #fafafa;
+  --semi-color-bg-2: #f5f5f5;
+  --semi-color-bg-3: #efefef;
+  --semi-color-text-0: #111111;
+  --semi-color-text-1: #444444;
+  --semi-color-text-2: #777777;
+  --semi-color-text-3: #999999;
+  --semi-color-primary: #111111;
+  --semi-color-primary-hover: #333333;
+  --semi-color-primary-active: #000000;
+  --semi-color-primary-light: #f5f5f5;
+  --semi-color-primary-light-hover: #eaeaea;
+  --semi-color-primary-light-active: #e0e0e0;
+  --semi-color-primary-disabled: #d9d9d9;
+  --semi-color-border: #e5e5e5;
+  --semi-color-border-dark: #d4d4d4;
+  --semi-color-shadow: transparent;
+  --semi-border-radius-small: 4px;
+  --semi-border-radius-medium: 4px;
+  --semi-border-radius-large: 4px;
+  --tokenhub-accent: #111111;
+}
+
+html.dark {
+  --semi-color-bg-0: #0a0a0a;
+  --semi-color-bg-1: #111111;
+  --semi-color-bg-2: #1a1a1a;
+  --semi-color-bg-3: #222222;
+  --semi-color-text-0: #f0f0f0;
+  --semi-color-text-1: #c0c0c0;
+  --semi-color-text-2: #888888;
+  --semi-color-text-3: #666666;
+  --semi-color-primary: #f0f0f0;
+  --semi-color-primary-hover: #d4d4d4;
+  --semi-color-primary-active: #b0b0b0;
+  --semi-color-primary-light: #1a1a1a;
+  --semi-color-primary-light-hover: #262626;
+  --semi-color-primary-light-active: #303030;
+  --semi-color-border: #2a2a2a;
+  --semi-color-border-dark: #333333;
+  --semi-color-shadow: transparent;
+  --tokenhub-accent: #f0f0f0;
+}
+
+body {
+  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo,
+    Consolas, 'Liberation Mono', monospace !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+.semi-card,
+.semi-card-bordered {
+  box-shadow: none !important;
+  border: 1px solid var(--semi-color-border) !important;
+  border-radius: 6px !important;
+}
+
+.semi-button {
+  box-shadow: none !important;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.semi-button-primary {
+  background-color: var(--tokenhub-accent) !important;
+  color: var(--semi-color-bg-0) !important;
+  border: none !important;
+}
+
+.semi-button-primary:hover {
+  opacity: 0.85;
+}
+
+.semi-input-wrapper {
+  box-shadow: none !important;
+  border-radius: 4px !important;
+}
+
+.semi-modal-content {
+  box-shadow: none !important;
+  border: 1px solid var(--semi-color-border) !important;
+  border-radius: 8px !important;
+}
+
+.semi-dropdown-menu {
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 4px 8px rgba(0,0,0,0.04) !important;
+  border: 1px solid var(--semi-color-border) !important;
+  border-radius: 6px !important;
+}
+
+.semi-table-bordered .semi-table-container {
+  border: 1px solid var(--semi-color-border) !important;
+}
+
+.semi-tag {
+  border-radius: 3px !important;
+  font-weight: 500;
+}
+
+.semi-badge-count {
+  border-radius: 3px !important;
+}
+
+.semi-navigation-item {
+  border-radius: 4px !important;
+}
+
+.semi-tabs-tab-button {
+  border-radius: 4px !important;
+}
+
+.semi-select {
+  border-radius: 4px !important;
+}
+
+.semi-datepicker-range-input {
+  border-radius: 4px !important;
+}
+
+.semi-navigation {
+  border-right: 1px solid var(--semi-color-border) !important;
+}
+
+.semi-layout-header {
+  border-bottom: 1px solid var(--semi-color-border) !important;
+  box-shadow: none !important;
+}
+
+.semi-table {
+  font-size: 13px;
+}
+
+.semi-table-thead th {
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  font-size: 11px !important;
+  letter-spacing: 0.05em;
+  color: var(--semi-color-text-2) !important;
+}
+
+.semi-input,
+.semi-input-number {
+  font-size: 13px;
+}
+
+.semi-form-field-label-text {
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.semi-switch:checked {
+  background-color: var(--tokenhub-accent) !important;
+}
+
+.semi-radio-checked .semi-radio-inner-checked {
+  background-color: var(--tokenhub-accent) !important;
+}
+
+.semi-checkbox-checked .semi-checkbox-inner-checked {
+  background-color: var(--tokenhub-accent) !important;
+}
+
+/* ==================== Homepage Animations ==================== */
+
+@keyframes tokenhub-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tokenhub-draw-line {
+  from {
+    stroke-dashoffset: 200;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes tokenhub-draw-bar {
+  from {
+    stroke-dashoffset: 200;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes tokenhub-icon-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes tokenhub-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.tokenhub-hero-icon {
+  margin-bottom: 1.5rem;
+  animation: tokenhub-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both,
+             tokenhub-float 4s ease-in-out 1s infinite;
+}
+
+.tokenhub-hero-icon svg line,
+.tokenhub-hero-icon svg rect {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+}
+
+.tokenhub-hero-icon svg rect:first-child {
+  stroke-dasharray: 0;
+  stroke-dashoffset: 0;
+}
+
+.tokenhub-hero-icon svg rect:nth-child(3) {
+  stroke-dasharray: 0;
+  stroke-dashoffset: 0;
+}
+
+.tokenhub-hero-icon svg g > rect {
+  animation: tokenhub-icon-pulse 3s ease-in-out infinite;
+}
+
+.tokenhub-hero-icon svg .tokenhub-line-1 {
+  animation: tokenhub-draw-line 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+}
+
+.tokenhub-hero-icon svg .tokenhub-line-2 {
+  animation: tokenhub-draw-line 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+}
+
+.tokenhub-hero-icon svg .tokenhub-line-3 {
+  animation: tokenhub-draw-line 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+
+.tokenhub-hero-icon svg .tokenhub-line-bar {
+  animation: tokenhub-draw-bar 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
+}
+
+.tokenhub-hero-title {
+  animation: tokenhub-fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+.tokenhub-hero-sub {
+  animation: tokenhub-fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+}
+
+.tokenhub-hero-cta {
+  margin-top: 2rem;
+  animation: tokenhub-fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+
+.tokenhub-hero-cta:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease;
+}

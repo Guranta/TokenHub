@@ -979,7 +979,7 @@ html.dark .with-pastel-balls::before {
 .semi-select,
 .semi-button,
 .semi-datepicker-range-input {
-  border-radius: 10px !important;
+  border-radius: 4px !important;
 }
 
 @keyframes slideInLeft {
