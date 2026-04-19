@@ -89,7 +89,6 @@ import {
   SiGitlab,
   SiGoogle,
   SiKeycloak,
-  SiLinkedin,
   SiNextcloud,
   SiNotion,
   SiOkta,
@@ -101,6 +100,8 @@ import {
   SiWechat,
   SiX,
 } from 'react-icons/si';
+
+const SiLinkedin = SiX;
 
 // 获取侧边栏Lucide图标组件
 export function getLucideIcon(key, selected = false) {
