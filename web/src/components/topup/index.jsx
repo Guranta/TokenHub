@@ -78,6 +78,10 @@ const TopUp = () => {
   const [enableWaffoPancakeTopUp, setEnableWaffoPancakeTopUp] = useState(false);
   const [waffoPancakeMinTopUp, setWaffoPancakeMinTopUp] = useState(1);
 
+  // Infini 相关状态
+  const [enableInfiniTopUp, setEnableInfiniTopUp] = useState(false);
+  const [infiniMinTopUp, setInfiniMinTopUp] = useState(1);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
   const [payWay, setPayWay] = useState('');
@@ -144,6 +148,9 @@ const TopUp = () => {
     if (typeof payment === 'string' && payment.startsWith('waffo:')) {
       return getWaffoAmount(value);
     }
+    if (payment === 'infini') {
+      return getAmount(value);
+    }
     return getAmount(value);
   };
 
@@ -207,6 +214,11 @@ const TopUp = () => {
         showError(t('管理员未开启 Waffo 充值！'));
         return;
       }
+    } else if (payment === 'infini') {
+      if (!enableInfiniTopUp) {
+        showError(t('管理员未开启 Infini 充值！'));
+        return;
+      }
     } else {
       if (!enableOnlineTopUp) {
         showError(t('管理员未开启在线充值！'));
@@ -249,6 +261,34 @@ const TopUp = () => {
       setConfirmLoading(true);
       try {
         await waffoTopUp(Number.isFinite(payMethodIndex) ? payMethodIndex : 0);
+      } finally {
+        setOpen(false);
+        setConfirmLoading(false);
+      }
+      return;
+    }
+
+    if (payWay === 'infini') {
+      setConfirmLoading(true);
+      try {
+        const res = await API.post('/api/user/infini/pay', {
+          amount: parseInt(topUpCount),
+          payment_method: 'infini',
+        });
+        if (res !== undefined) {
+          const { message, data } = res.data;
+          if (message === 'success') {
+            window.open(data.checkout_url, '_blank');
+          } else {
+            const errorMsg =
+              typeof data === 'string' ? data : message || t('支付失败');
+            showError(errorMsg);
+          }
+        } else {
+          showError(res);
+        }
+      } catch (err) {
+        showError(t('支付请求失败'));
       } finally {
         setOpen(false);
         setConfirmLoading(false);
@@ -639,6 +679,7 @@ const TopUp = () => {
           const enableWaffoTopUp = data.enable_waffo_topup || false;
           const enableWaffoPancakeTopUp =
             data.enable_waffo_pancake_topup || false;
+          const enableInfiniTopUp = data.enable_infini_topup || false;
           const minTopUpValue = enableOnlineTopUp
             ? data.min_topup
             : enableStripeTopUp
@@ -647,7 +688,9 @@ const TopUp = () => {
                 ? data.waffo_min_topup
                 : enableWaffoPancakeTopUp
                   ? data.waffo_pancake_min_topup
-                : 1;
+                  : enableInfiniTopUp
+                    ? data.infini_min_topup
+                  : 1;
           setEnableOnlineTopUp(enableOnlineTopUp);
           setEnableStripeTopUp(enableStripeTopUp);
           setEnableCreemTopUp(enableCreemTopUp);
@@ -656,6 +699,8 @@ const TopUp = () => {
           setWaffoMinTopUp(data.waffo_min_topup || 1);
           setEnableWaffoPancakeTopUp(enableWaffoPancakeTopUp);
           setWaffoPancakeMinTopUp(data.waffo_pancake_min_topup || 1);
+          setEnableInfiniTopUp(enableInfiniTopUp);
+          setInfiniMinTopUp(data.infini_min_topup || 1);
           setMinTopUp(minTopUpValue);
           setTopUpCount(minTopUpValue);
 
@@ -951,6 +996,7 @@ const TopUp = () => {
           creemPreTopUp={creemPreTopUp}
           enableWaffoTopUp={enableWaffoTopUp}
           enableWaffoPancakeTopUp={enableWaffoPancakeTopUp}
+          enableInfiniTopUp={enableInfiniTopUp}
           presetAmounts={presetAmounts}
           selectedPreset={selectedPreset}
           selectPresetAmount={selectPresetAmount}

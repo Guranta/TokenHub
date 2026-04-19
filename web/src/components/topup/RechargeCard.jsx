@@ -88,6 +88,7 @@ const RechargeCard = ({
   onOpenHistory,
   enableWaffoTopUp,
   enableWaffoPancakeTopUp,
+  enableInfiniTopUp,
   subscriptionLoading = false,
   subscriptionPlans = [],
   billingPreference,
@@ -230,7 +231,8 @@ const RechargeCard = ({
           enableStripeTopUp ||
           enableCreemTopUp ||
           enableWaffoTopUp ||
-          enableWaffoPancakeTopUp ? (
+          enableWaffoPancakeTopUp ||
+          enableInfiniTopUp ? (
           <Form
             getFormApi={(api) => (onlineFormApiRef.current = api)}
             initValues={{ topUpCount: topUpCount }}
@@ -239,7 +241,8 @@ const RechargeCard = ({
               {(enableOnlineTopUp ||
                 enableStripeTopUp ||
                 enableWaffoTopUp ||
-                enableWaffoPancakeTopUp) && (
+                enableWaffoPancakeTopUp ||
+                enableInfiniTopUp) && (
                 <Row gutter={12}>
                   <Col xs={24} sm={24} md={24} lg={10} xl={10}>
                     <Form.InputNumber
@@ -249,7 +252,8 @@ const RechargeCard = ({
                         !enableOnlineTopUp &&
                         !enableStripeTopUp &&
                         !enableWaffoTopUp &&
-                        !enableWaffoPancakeTopUp
+                        !enableWaffoPancakeTopUp &&
+                        !enableInfiniTopUp
                       }
                       placeholder={
                         t('充值数量，最低 ') + renderQuotaWithAmount(minTopUp)
@@ -315,14 +319,18 @@ const RechargeCard = ({
                               payMethod.type.startsWith('waffo:');
                             const isWaffoPancake =
                               payMethod.type === 'waffo_pancake';
+                            const isInfini =
+                              payMethod.type === 'infini';
                             const disabled =
                               (!enableOnlineTopUp &&
                                 !isStripe &&
                                 !isWaffo &&
-                                !isWaffoPancake) ||
+                                !isWaffoPancake &&
+                                !isInfini) ||
                               (!enableStripeTopUp && isStripe) ||
                               (!enableWaffoTopUp && isWaffo) ||
                               (!enableWaffoPancakeTopUp && isWaffoPancake) ||
+                              (!enableInfiniTopUp && isInfini) ||
                               minTopupVal > Number(topUpCount || 0);
 
                             const buttonEl = (
@@ -342,6 +350,8 @@ const RechargeCard = ({
                                     <SiWechat size={18} color='#07C160' />
                                   ) : payMethod.type === 'stripe' ? (
                                     <SiStripe size={18} color='#635BFF' />
+                                  ) : payMethod.type === 'infini' ? (
+                                    <Coins size={18} color='var(--semi-color-primary)' />
                                   ) : payMethod.icon ? (
                                     <img
                                       src={payMethod.icon}
@@ -398,7 +408,7 @@ const RechargeCard = ({
                 </Row>
               )}
 
-              {(enableOnlineTopUp || enableStripeTopUp || enableWaffoTopUp) && (
+              {(enableOnlineTopUp || enableStripeTopUp || enableWaffoTopUp || enableInfiniTopUp) && (
                 <Form.Slot
                   label={
                     <div className='flex items-center gap-2'>

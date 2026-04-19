@@ -25,6 +25,7 @@ import SettingsPaymentGatewayStripe from '../../pages/Setting/Payment/SettingsPa
 import SettingsPaymentGatewayCreem from '../../pages/Setting/Payment/SettingsPaymentGatewayCreem';
 import SettingsPaymentGatewayWaffo from '../../pages/Setting/Payment/SettingsPaymentGatewayWaffo';
 import SettingsPaymentGatewayWaffoPancake from '../../pages/Setting/Payment/SettingsPaymentGatewayWaffoPancake';
+import SettingsPaymentGatewayInfini from '../../pages/Setting/Payment/SettingsPaymentGatewayInfini';
 import { API, showError, toBoolean } from '../../helpers';
 import { useTranslation } from 'react-i18next';
 
@@ -205,6 +206,13 @@ const PaymentSetting = () => {
             {/*    hideSectionTitle*/}
             {/*  />*/}
             {/*</Tabs.TabPane>*/}
+            <Tabs.TabPane tab={t('Infini 设置')} itemKey='infini'>
+              <SettingsPaymentGatewayInfini
+                options={inputs}
+                refresh={onRefresh}
+                hideSectionTitle
+              />
+            </Tabs.TabPane>
           </Tabs>
         </Card>
       </Spin>
