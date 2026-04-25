@@ -116,9 +116,11 @@ cd new-api
 # Edit docker-compose.yml configuration
 nano docker-compose.yml
 
-# Start the service
-docker-compose up -d
+# Build the current checkout and start the service
+docker compose up --build -d
 ```
+
+> **Note for forks/customized deployments:** `docker-compose.yml` is configured to build from the current repository checkout via `Dockerfile`, so your local code changes are included when you run `docker compose up --build -d`.
 
 <details>
 <summary><strong>Using Docker Commands</strong></summary>
