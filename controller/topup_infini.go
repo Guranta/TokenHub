@@ -102,7 +102,7 @@ func RequestInfiniPay(c *gin.Context) {
 	if operation_setting.GetQuotaDisplayType() == operation_setting.QuotaDisplayTypeTokens {
 		dAmount := decimal.NewFromInt(int64(amount))
 		dQuotaPerUnit := decimal.NewFromFloat(common.QuotaPerUnit)
-		amount = int(dAmount.Div(dQuotaPerUnit).IntPart())
+		amount = dAmount.Div(dQuotaPerUnit).IntPart()
 	}
 
 	topUp := &model.TopUp{
