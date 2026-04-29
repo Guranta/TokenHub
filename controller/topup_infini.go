@@ -15,6 +15,7 @@ import (
 	"github.com/QuantumNous/new-api/setting/system_setting"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 )
 
@@ -84,7 +85,7 @@ func RequestInfiniPay(c *gin.Context) {
 
 	infiniOrder, err := client.CreateOrder(InfiniCreateOrderRequest{
 		Amount:          strconv.FormatFloat(payMoney, 'f', 2, 64),
-		RequestID:       tradeNo,
+		RequestID:       uuid.New().String(),
 		ClientReference: tradeNo,
 		OrderDesc:       fmt.Sprintf("TokenHub TopUp %d", req.Amount),
 		ExpiresIn:       3600,
