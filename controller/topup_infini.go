@@ -54,21 +54,24 @@ func RequestInfiniPay(c *gin.Context) {
 	}
 
 	id := c.GetInt("id")
-	group, err := model.GetUserGroup(id, true)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"message": "error", "data": "获取用户分组失败"})
-		return
-	}
-
-	payMoney := getPayMoney(req.Amount, group)
-	if payMoney < 0.01 {
-		c.JSON(http.StatusOK, gin.H{"message": "error", "data": "充值金额过低"})
-		return
-	}
 
 	client := getInfiniClient()
 	if client == nil {
 		c.JSON(http.StatusOK, gin.H{"message": "error", "data": "Infini 支付未配置"})
+		return
+	}
+
+	// Infini charges in USD (USDT), no Price multiplier needed
+	payMoney := float64(req.Amount)
+	amount := req.Amount
+	if operation_setting.GetQuotaDisplayType() == operation_setting.QuotaDisplayTypeTokens {
+		dAmount := decimal.NewFromInt(int64(req.Amount))
+		dQuotaPerUnit := decimal.NewFromFloat(common.QuotaPerUnit)
+		amount = dAmount.Div(dQuotaPerUnit).IntPart()
+		payMoney = float64(amount)
+	}
+	if payMoney < 0.01 {
+		c.JSON(http.StatusOK, gin.H{"message": "error", "data": "充值金额过低"})
 		return
 	}
 
@@ -97,13 +100,6 @@ func RequestInfiniPay(c *gin.Context) {
 		logger.LogError(c.Request.Context(), fmt.Sprintf("Infini 创建订单失败 user_id=%d trade_no=%s amount=%d error=%q", id, tradeNo, req.Amount, err.Error()))
 		c.JSON(http.StatusOK, gin.H{"message": "error", "data": "拉起支付失败"})
 		return
-	}
-
-	amount := req.Amount
-	if operation_setting.GetQuotaDisplayType() == operation_setting.QuotaDisplayTypeTokens {
-		dAmount := decimal.NewFromInt(int64(amount))
-		dQuotaPerUnit := decimal.NewFromFloat(common.QuotaPerUnit)
-		amount = dAmount.Div(dQuotaPerUnit).IntPart()
 	}
 
 	topUp := &model.TopUp{

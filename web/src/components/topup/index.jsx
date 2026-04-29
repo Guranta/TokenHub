@@ -149,7 +149,7 @@ const TopUp = () => {
       return getWaffoAmount(value);
     }
     if (payment === 'infini') {
-      return getAmount(value);
+      return getAmount(value, 'infini');
     }
     return getAmount(value);
   };
@@ -820,15 +820,17 @@ const TopUp = () => {
     return amount + ' ' + t('元');
   };
 
-  const getAmount = async (value) => {
+  const getAmount = async (value, paymentMethod) => {
     if (value === undefined) {
       value = topUpCount;
     }
     setAmountLoading(true);
     try {
-      const res = await API.post('/api/user/amount', {
-        amount: parseFloat(value),
-      });
+      const requestBody = { amount: parseFloat(value) };
+      if (paymentMethod) {
+        requestBody.payment_method = paymentMethod;
+      }
+      const res = await API.post('/api/user/amount', requestBody);
       if (res !== undefined) {
         const { message, data } = res.data;
         if (message === 'success') {

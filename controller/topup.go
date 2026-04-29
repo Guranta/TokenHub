@@ -141,7 +141,8 @@ type EpayRequest struct {
 }
 
 type AmountRequest struct {
-	Amount int64 `json:"amount"`
+	Amount        int64  `json:"amount"`
+	PaymentMethod string `json:"payment_method,omitempty"`
 }
 
 var nonEpayPaymentMethodsForCallback = []string{
@@ -446,13 +447,25 @@ func RequestAmount(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"message": "error", "data": fmt.Sprintf("充值数量不能小于 %d", getMinTopup())})
 		return
 	}
-	id := c.GetInt("id")
-	group, err := model.GetUserGroup(id, true)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"message": "error", "data": "获取用户分组失败"})
-		return
+
+	var payMoney float64
+	if req.PaymentMethod == model.PaymentMethodInfini {
+		payMoney = float64(req.Amount)
+		if operation_setting.GetQuotaDisplayType() == operation_setting.QuotaDisplayTypeTokens {
+			dAmount := decimal.NewFromInt(req.Amount)
+			dQuotaPerUnit := decimal.NewFromFloat(common.QuotaPerUnit)
+			payMoney = dAmount.Div(dQuotaPerUnit).InexactFloat64()
+		}
+	} else {
+		id := c.GetInt("id")
+		group, err := model.GetUserGroup(id, true)
+		if err != nil {
+			c.JSON(http.StatusOK, gin.H{"message": "error", "data": "获取用户分组失败"})
+			return
+		}
+		payMoney = getPayMoney(req.Amount, group)
 	}
-	payMoney := getPayMoney(req.Amount, group)
+
 	if payMoney <= 0.01 {
 		c.JSON(http.StatusOK, gin.H{"message": "error", "data": "充值金额过低"})
 		return
